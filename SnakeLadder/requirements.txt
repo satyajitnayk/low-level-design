@@ -1,0 +1,7 @@
+1. Multiplayer game
+2. Customizabale Board in terms of snake & ladder placement & Board size.
+3. Customizable in terms of number of dice used.
+4. When Game Board loads it should
+  a. Load the configured Board size.
+  b. Load the configured snake & ladder.
+  c. Load the number of players who will play the game & all players should be at starting location.

@@ -1,7 +1,0 @@
-1. Multiple floors.
-2. Multiple gates.
-3. Parking attendant at each gate.
-4. Entry gates could process parking ticket.
-5. Exit gates should process payment on an hourly basis.
-6. Facility for different types of vechiles.
-7. Display board at each floors showing vacancy on the floor.
