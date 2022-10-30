@@ -1,5 +1,9 @@
+import java.sql.Date;
+import java.util.List;
+import java.util.Map;
+
 class ParkingLot {
-  
+
   List<ParkingFloor> parkingFloors;
   List<Entrance> entrances;
   List<Exit> exist;
@@ -7,13 +11,16 @@ class ParkingLot {
   Address address;
   String parkingLotName;
 
-  public boolean isParkingSpaceAvailable(Vehicle vehicle){}
-  public boolean updateParkingAttendant(ParkingAttendant parkingAttendant, int gateId){}
+  public boolean isParkingSpaceAvailable(Vehicle vehicle) {
+  }
+
+  public boolean updateParkingAttendant(ParkingAttendant parkingAttendant, int gateId) {
+  }
 
 }
 
 class ParkingFloor {
-  
+
   int levelId;
   boolean isFull;
   List<ParkingSpace> parkingspaces;
@@ -31,13 +38,15 @@ class Gate {
 
 class Entrance extends Gate {
 
-  public ParkingTicket getParkingTicket(Vehicle vehicle){}
+  public ParkingTicket getParkingTicket(Vehicle vehicle) {
+  }
 
 }
 
 class Exit {
 
-  public ParkingTicket payForParking(ParkingTicket parkingTicket, PaymentType paymentType){}
+  public ParkingTicket payForParking(ParkingTicket parkingTicket, PaymentType paymentType) {
+  }
 
 }
 
@@ -65,7 +74,8 @@ class ParkingDisplayBoard {
 
   Map<ParkingSpaceType, Integer> freeSpotsAvailableMap;
 
-  public void updateFreeSpotsAvailable(ParkingSpaceType parkingSpaceType, int spaces){}
+  public void updateFreeSpotsAvailable(ParkingSpaceType parkingSpaceType, int spaces) {
+  }
 
 }
 
@@ -81,9 +91,14 @@ class Account {
 
 class Admin extends Account {
 
-  public boolean addParkingFloor(ParkingLot parkingLot, ParkingFloor parkingFloor){}
-  public boolean addParkingSpace(ParkingFloor parkingFloor, ParkingSpace parkingSpace){}
-  public boolean addParkingDisplayBoard(ParkingFloor parkingFloor, ParkingDisplayBoard parkingDisplayBoard){}
+  public boolean addParkingFloor(ParkingLot parkingLot, ParkingFloor parkingFloor) {
+  }
+
+  public boolean addParkingSpace(ParkingFloor parkingFloor, ParkingSpace parkingSpace) {
+  }
+
+  public boolean addParkingDisplayBoard(ParkingFloor parkingFloor, ParkingDisplayBoard parkingDisplayBoard) {
+  }
 
 }
 
@@ -91,8 +106,11 @@ class ParkingAttendant extends Account {
 
   Payment paymentService;
 
-  public boolean processVehicleEntry(Vehicle vehicle){}
-  public PaymentInfo processPayment(ParkingTicket parkingTicket, PaymentType paymentType){}
+  public boolean processVehicleEntry(Vehicle vehicle) {
+  }
+
+  public PaymentInfo processPayment(ParkingTicket parkingTicket, PaymentType paymentType) {
+  }
 
 }
 
@@ -116,14 +134,18 @@ class ParkingTicket {
   double totalCost;
   ParkingTicketStatus parkingTicketStatus;
 
-  public void updateTotalCost(){}
-  public void updateVehicleExitTime(Date vehicleExitDateTime){}
+  public void updateTotalCost() {
+  }
+
+  public void updateVehicleExitTime(Date vehicleExitDateTime) {
+  }
 
 }
 
 class Payment {
 
-  public PaymentInfo makePayment(ParkingTicket parkingTicket, PaymentType paymentType){}
+  public PaymentInfo makePayment(ParkingTicket parkingTicket, PaymentType paymentType) {
+  }
 
 }
 
@@ -133,7 +155,7 @@ class PaymentInfo {
   Date paymentDate;
   int transactionId;
   ParkingTicket parkingTicket;
-  PaymentStatus paymentStatus; 
+  PaymentStatus paymentStatus;
 
 }
 
@@ -145,7 +167,7 @@ enum PaymentType {
 
 enum ParkingSpaceType {
 
-    BIKE_PARKING, CAR_PARKING, TRUCK_PARKING
+  BIKE_PARKING, CAR_PARKING, TRUCK_PARKING
 
 }
 
