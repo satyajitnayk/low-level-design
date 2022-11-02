@@ -1,7 +1,8 @@
-1. Multiple floors.
-2. Multiple gates.
-3. Parking attendant at each gate.
-4. Entry gates could process parking ticket.
-5. Exit gates should process payment on an hourly basis.
-6. Facility for different types of vechiles.
-7. Display board at each floors showing vacancy on the floor.
+1. Multilevel parking lot.
+2. Multiple category of parking space.
+3. Multiple entry & exit
+4. Should not allow more vehicles than allocated space for each category.
+5. Charge should be hourly basis.
+6. Display available number of parking for each category at entry itself.
+
+

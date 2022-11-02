@@ -1,190 +1,66 @@
-import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
-class ParkingLot {
+public class ParkingLot {
 
-  List<ParkingFloor> parkingFloors;
-  List<Entrance> entrances;
-  List<Exit> exist;
+  private String nameOfParkingLot;
+  private Address address;
+  private List<ParkingFloor> parkingFloors;
+  private static ParkingLot parkingLot = null;
 
-  Address address;
-  String parkingLotName;
-
-  public boolean isParkingSpaceAvailable(Vehicle vehicle) {
+  private ParkingLot(String nameOfParkingLot, Address address, List<ParkingFloor> parkingFloors) {
+    this.address = address;
+    this.nameOfParkingLot = nameOfParkingLot;
+    this.parkingFloors = parkingFloors;
   }
 
-  public boolean updateParkingAttendant(ParkingAttendant parkingAttendant, int gateId) {
+  public static ParkingLot getInstance(String nameOfParkinggLot, Address address, List<ParkingFloor> parkingFloors) {
+    if (parkingLot == null) {
+      parkingLot = new ParkingLot(nameOfParkinggLot, address, parkingFloors);
+    }
+    return parkingLot;
   }
 
-}
-
-class ParkingFloor {
-
-  int levelId;
-  boolean isFull;
-  List<ParkingSpace> parkingspaces;
-
-  ParkingDisplayBoard parkingDisplayBoard;
-
-}
-
-class Gate {
-
-  int gateId;
-  ParkingAttendant parkingAttendant;
-
-}
-
-class Entrance extends Gate {
-
-  public ParkingTicket getParkingTicket(Vehicle vehicle) {
+  public void addFloors(String name, Map<ParkingSlotType, Map<String, ParkingSlot>> parkingSlots) {
+    ParkingFloor parkingFloor = new ParkingFloor(name, parkingSlots);
+    parkingFloors.add(parkingFloor);
   }
 
-}
-
-class Exit {
-
-  public ParkingTicket payForParking(ParkingTicket parkingTicket, PaymentType paymentType) {
+  public void removeFloors(ParkingFloor parkingFloor) {
+    parkingFloors.remove(parkingFloor);
   }
 
-}
+  public Ticket assignTicket(Vehicle vehicle) {
+    ParkingSlot parkingSlot = getParkingSlotForVehicleAndPark(vehicle);
+    if (parkingSlot == null)
+      return null;
 
-class Address {
-
-  String country;
-  String state;
-  String city;
-  String street;
-  String pincode;
-
-}
-
-class ParkingSpace {
-
-  int spaceId;
-  boolean isFree;
-  double costPerHour;
-  Vehicle vehicle;
-  ParkingSpaceType parkingSpaceType;
-
-}
-
-class ParkingDisplayBoard {
-
-  Map<ParkingSpaceType, Integer> freeSpotsAvailableMap;
-
-  public void updateFreeSpotsAvailable(ParkingSpaceType parkingSpaceType, int spaces) {
+    Ticket parkingTicket = createTicketForSlot(parkingSlot, vehicle);
+    return parkingTicket;
   }
 
-}
-
-class Account {
-
-  String name;
-  String email;
-  String password;
-  String empId;
-  String address;
-
-}
-
-class Admin extends Account {
-
-  public boolean addParkingFloor(ParkingLot parkingLot, ParkingFloor parkingFloor) {
+  private Ticket createTicketForSlot(ParkingSlot parkingSlot, Vehicle vehicle) {
+    return Ticket.createTicket(vehicle, parkingSlot);
   }
 
-  public boolean addParkingSpace(ParkingFloor parkingFloor, ParkingSpace parkingSpace) {
+  private ParkingSlot getParkingSlotForVehicleAndPark(Vehicle vehicle) {
+    ParkingSlot parkingSlot = null;
+    for (ParkingFloor floor : parkingFloors) {
+      parkingSlot = floor.getRelevantSlotForVehicleAndPark(vehicle);
+      if (parkingSlot != null)
+        break;
+    }
+
+    return parkingSlot;
   }
 
-  public boolean addParkingDisplayBoard(ParkingFloor parkingFloor, ParkingDisplayBoard parkingDisplayBoard) {
+  public double scanAndPay(Ticket ticket) {
+    long endTime = System.currentTimeMillis();
+    ticket.getParkingSlot().removeVehicle(ticket.getVehicle());
+    int duration = (int) (endTime - ticket.getStartTime()) / 1000;
+    double price = ticket.getParkingSlot().getParkingSloType().getPriceForParking(duration);
+    // persist the data to database
+    return price;
   }
-
-}
-
-class ParkingAttendant extends Account {
-
-  Payment paymentService;
-
-  public boolean processVehicleEntry(Vehicle vehicle) {
-  }
-
-  public PaymentInfo processPayment(ParkingTicket parkingTicket, PaymentType paymentType) {
-  }
-
-}
-
-class Vehicle {
-
-  String licenseNumbe;
-  VehicleType vehicleType;
-  ParkingTicket parkingTicket;
-  PaymentInfo paymentInfo;
-
-}
-
-class ParkingTicket {
-
-  int ticketId;
-  int levelId;
-  int spaceId;
-  Date vehicleEntryDateTime;
-  Date vehicleExitDateTime;
-  ParkingSpaceType parkingSpaceType;
-  double totalCost;
-  ParkingTicketStatus parkingTicketStatus;
-
-  public void updateTotalCost() {
-  }
-
-  public void updateVehicleExitTime(Date vehicleExitDateTime) {
-  }
-
-}
-
-class Payment {
-
-  public PaymentInfo makePayment(ParkingTicket parkingTicket, PaymentType paymentType) {
-  }
-
-}
-
-class PaymentInfo {
-
-  double amount;
-  Date paymentDate;
-  int transactionId;
-  ParkingTicket parkingTicket;
-  PaymentStatus paymentStatus;
-
-}
-
-enum PaymentType {
-
-  CASH, CREDIT_CARD, DEBIT_CARD, UPI;
-
-}
-
-enum ParkingSpaceType {
-
-  BIKE_PARKING, CAR_PARKING, TRUCK_PARKING
-
-}
-
-enum VehicleType {
-
-  BIKE, CAR, TRUCK
-
-}
-
-enum ParkingTicketStatus {
-
-  PAID, ACTIVE
-
-}
-
-enum PaymentStatus {
-
-  UNPAID, PENDING, COMPLETED, DECLINED, CANCELLED, REFUNDED;
 
 }
